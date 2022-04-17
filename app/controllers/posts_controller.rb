@@ -43,11 +43,30 @@ class PostsController < ApplicationController
       elsif params[:sortBy] === "popularity"
         data = data.values[0].sort_by { |h | h["popularity"]}
       end
-      puts "elseif1", data
     elsif params[:direction]
-      puts url, "elsif2"
-    end
+      if params[:direction] === 'asc'
+        if params[:sortBy] === "id"
+          data = data.values[0].sort_by { |h | h["id"]}
+        elsif params[:sortBy] === "reads"
+          data = data.values[0].sort_by { |h | h["reads"]}
+        elsif params[:sortBy] === "likes"
+          data = data.values[0].sort_by { |h | h["likes"]}
+        elsif params[:sortBy] === "popularity"
+          data = data.values[0].sort_by { |h | h["popularity"]}
+        end
+      elsif params[:direction] === 'desc'
+        if params[:sortBy] === "id"
+          data = data.values[0].sort_by { |h | h["id"]}.reverse()
+        elsif params[:sortBy] === "reads"
+          data = data.values[0].sort_by { |h | h["reads"]}.reverse()
+        elsif params[:sortBy] === "likes"
+          data = data.values[0].sort_by { |h | h["likes"]}.reverse()
+        elsif params[:sortBy] === "popularity"
+          data = data.values[0].sort_by { |h | h["popularity"]}.reverse()
+        end
+      end
     render json: data
+    end
   end
 
   private
