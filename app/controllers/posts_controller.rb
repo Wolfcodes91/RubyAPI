@@ -33,6 +33,7 @@ class PostsController < ApplicationController
         end
       uniquePosts = posts.uniq
       data = {"posts": uniquePosts}
+      render json: data
     if params[:sortBy] && !params[:direction]
       if params[:sortBy] === "id"
         sortedData = data.values[0].sort_by { |h | h["id"]}
