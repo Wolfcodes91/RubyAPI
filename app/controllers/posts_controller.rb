@@ -35,35 +35,38 @@ class PostsController < ApplicationController
       data = {"posts": uniquePosts}
     if params[:sortBy] && !params[:direction]
       if params[:sortBy] === "id"
-        data = data.values[0].sort_by { |h | h["id"]}
+        sortedData = data.values[0].sort_by { |h | h["id"]}
       elsif params[:sortBy] === "reads"
-        data = data.values[0].sort_by { |h | h["reads"]}
+        sortedData = data.values[0].sort_by { |h | h["reads"]}
       elsif params[:sortBy] === "likes"
-        data = data.values[0].sort_by { |h | h["likes"]}
+        sortedData = data.values[0].sort_by { |h | h["likes"]}
       elsif params[:sortBy] === "popularity"
-        data = data.values[0].sort_by { |h | h["popularity"]}
+        sortedData = data.values[0].sort_by { |h | h["popularity"]}
       end
+      data = {"posts": sortedData}
     elsif params[:direction]
       if params[:direction] === 'asc'
         if params[:sortBy] === "id"
-          data = data.values[0].sort_by { |h | h["id"]}
+          sortedData = data.values[0].sort_by { |h | h["id"]}
         elsif params[:sortBy] === "reads"
-          data = data.values[0].sort_by { |h | h["reads"]}
+          sortedData = data.values[0].sort_by { |h | h["reads"]}
         elsif params[:sortBy] === "likes"
-          data = data.values[0].sort_by { |h | h["likes"]}
+          sortedData = data.values[0].sort_by { |h | h["likes"]}
         elsif params[:sortBy] === "popularity"
-          data = data.values[0].sort_by { |h | h["popularity"]}
+          sortedData = data.values[0].sort_by { |h | h["popularity"]}
         end
+        data = {"posts": sortedData}
       elsif params[:direction] === 'desc'
         if params[:sortBy] === "id"
-          data = data.values[0].sort_by { |h | h["id"]}.reverse()
+          sortedData = data.values[0].sort_by { |h | h["id"]}.reverse()
         elsif params[:sortBy] === "reads"
-          data = data.values[0].sort_by { |h | h["reads"]}.reverse()
+          sortedData = data.values[0].sort_by { |h | h["reads"]}.reverse()
         elsif params[:sortBy] === "likes"
-          data = data.values[0].sort_by { |h | h["likes"]}.reverse()
+          sortedData = data.values[0].sort_by { |h | h["likes"]}.reverse()
         elsif params[:sortBy] === "popularity"
-          data = data.values[0].sort_by { |h | h["popularity"]}.reverse()
+          sortedData = data.values[0].sort_by { |h | h["popularity"]}.reverse()
         end
+        data = {"posts": sortedData}
       end
     render json: data
     end
