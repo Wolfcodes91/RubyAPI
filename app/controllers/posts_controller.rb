@@ -15,25 +15,17 @@ class PostsController < ApplicationController
     if params[:tags]
     @category = params[:tags].split(",")
       jsonArr = []
-      i = 0
       for cat in @category
         url = "https://api.hatchways.io/assessment/blog/posts?tag=#{cat}"
-        puts cat, i
         response = RestClient.get(url)
         jsonArr.push(JSON.parse(response))
-        i+=1
       end
-      puts jsonArr.length
       posts = jsonArr[0]['posts']
-      if jsonArr.length > 1
-        # x = 1
-        # while x < jsonArr.length
-        posts = jsonArr[0]['posts'] + jsonArr[1]['posts']
-        #   posts = posts + jsonArr[x]['posts']
-        #   x+=1
-        # end
-      end
-      puts posts
+        x = 1
+        while x < jsonArr.length
+          posts = posts + jsonArr[x]['posts']
+          x+=1
+        end
       uniquePosts = posts.uniq
       data = {"posts": uniquePosts}
     # elsif params[:direction]
