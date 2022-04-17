@@ -12,7 +12,12 @@ class PostsController < ApplicationController
   end
   
   def get_posts
-    if params[:tags]
+    if !params[:tags]
+      url = "https://api.hatchways.io/assessment/blog/posts?tag=none"
+      data = RestClient.get(url)
+      render json: data
+      return
+    end
     @category = params[:tags].split(",")
       jsonArr = []
       for cat in @category
@@ -28,22 +33,10 @@ class PostsController < ApplicationController
         end
       uniquePosts = posts.uniq
       data = {"posts": uniquePosts}
-    # elsif params[:direction]
-    #   @direction = params[:direction]
-    #   @sortBy = params[:sortBy]
-    #   @category = params[:tags]
-    #   url = "https://api.hatchways.io/assessment/blog/posts?tag=#{@category}&sortBy=#{@sortBy}&direction=#{@direction}"
-    #   puts url, "if"
-    #   data = RestClient.get(url)
-    # elsif params[:sortBy]
-    #   @sortBy = params[:sortBy]
-    #   @category = params[:tags]
-    #   url = "https://api.hatchways.io/assessment/blog/posts?tag=#{@category}&sortBy=#{@sortBy}"
-    #   puts url, "elsif1"
-    #   data = RestClient.get(url)
-    else
-      url = "https://api.hatchways.io/assessment/blog/posts?tag=none"
-      data = RestClient.get(url)
+    if params[:sortBy] && !params[:direction]
+      puts "elsif1"
+    elsif params[:direction]
+      puts url, "elsif2"
     end
     render json: data
   end
