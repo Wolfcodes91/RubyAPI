@@ -44,6 +44,7 @@ class PostsController < ApplicationController
         sortedData = data.values[0].sort_by { |h | h["popularity"]}
       end
       data = {"posts": sortedData}
+      render json: data
     elsif params[:direction]
       if params[:direction] === 'asc'
         if params[:sortBy] === "id"
