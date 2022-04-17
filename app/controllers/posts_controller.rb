@@ -33,7 +33,6 @@ class PostsController < ApplicationController
         end
       uniquePosts = posts.uniq
       data = {"posts": uniquePosts}
-      render json: data
     if params[:sortBy] && !params[:direction]
       if params[:sortBy] === "id"
         sortedData = data.values[0].sort_by { |h | h["id"]}
@@ -45,7 +44,6 @@ class PostsController < ApplicationController
         sortedData = data.values[0].sort_by { |h | h["popularity"]}
       end
       data = {"posts": sortedData}
-      render json: data
     elsif params[:direction]
       if params[:direction] === 'asc'
         if params[:sortBy] === "id"
@@ -70,8 +68,8 @@ class PostsController < ApplicationController
         end
         data = {"posts": sortedData}
       end
-    render json: data
     end
+    render json: data
   end
 
   private
