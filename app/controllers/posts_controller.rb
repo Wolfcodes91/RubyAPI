@@ -13,9 +13,11 @@ class PostsController < ApplicationController
   
   def get_posts
     if !params[:tags]
-      url = "https://api.hatchways.io/assessment/blog/posts?tag=none"
-      data = RestClient.get(url)
-      render json: data
+      response = 
+      {
+        "error": "Tags parameter is required"
+      }
+      render json: response
       return
     end
     @category = params[:tags].split(",")
@@ -67,6 +69,11 @@ class PostsController < ApplicationController
           sortedData = data.values[0].sort_by { |h | h["popularity"]}.reverse()
         end
         data = {"posts": sortedData}
+      else
+        data = 
+        {
+          "error": "sortBy parameter is invalid"
+        }
       end
     end
     render json: data
