@@ -34,7 +34,16 @@ class PostsController < ApplicationController
       uniquePosts = posts.uniq
       data = {"posts": uniquePosts}
     if params[:sortBy] && !params[:direction]
-      puts "elsif1"
+      if params[:sortBy] === "id"
+        data = data.values[0].sort_by { |h | h["id"]}
+      elsif params[:sortBy] === "reads"
+        data = data.values[0].sort_by { |h | h["reads"]}
+      elsif params[:sortBy] === "likes"
+        data = data.values[0].sort_by { |h | h["likes"]}
+      elsif params[:sortBy] === "popularity"
+        data = data.values[0].sort_by { |h | h["popularity"]}
+      end
+      puts "elseif1", data
     elsif params[:direction]
       puts url, "elsif2"
     end
