@@ -3,6 +3,7 @@
 ### Getting Started
 ## Use the command "rails s" in the terminal to spin up localhost:3000
 ## [Sample Link](http://localhost:3000/api/posts/?tags=science&sortBy=popularity&direction=asc)
+## bundle add async, actionpack-page_caching, actionpack-action_caching
 
 ### Info
 Change the Query strings in the url in order to search the API for different posts.
