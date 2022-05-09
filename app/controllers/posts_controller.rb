@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
   require 'rest-client'
   require 'json'
+  require 'async'
   before_action :set_post, only: %i[ show update destroy ]
 
   def index
@@ -37,11 +38,15 @@ class PostsController < ApplicationController
   end
 
   def handle_incoming_params(category, jsonArr)
-      for cat in @category
-        url = "https://api.hatchways.io/assessment/blog/posts?tag=#{cat}"
-        response = RestClient.get(url)
-        jsonArr.push(JSON.parse(response))
+    for cat in @category  
+      Async do |task|
+        task.async do 
+          url = "https://api.hatchways.io/assessment/blog/posts?tag=#{cat}"
+          response = RestClient.get(url)
+          jsonArr.push(JSON.parse(response))
+        end
       end
+    end
   end
 
   def get_unique_posts(category)
