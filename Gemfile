@@ -50,3 +50,7 @@ end
 
 
 gem "async", "~> 1.30"
+
+gem "actionpack-page_caching", "~> 1.2"
+
+gem "actionpack-action_caching", "~> 1.2"

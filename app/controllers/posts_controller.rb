@@ -42,7 +42,7 @@ class PostsController < ApplicationController
       Async do |task|
         task.async do 
           url = "https://api.hatchways.io/assessment/blog/posts?tag=#{cat}"
-          response = RestClient.get(url)
+          Rails.cache.fetch(response = RestClient.get(url), expires_in: 12.hours)
           jsonArr.push(JSON.parse(response))
         end
       end
