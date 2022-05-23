@@ -1,4 +1,4 @@
-class PostsController < ApplicationController
+class DrinksController < ApplicationController
   require 'rest-client'
   require 'json'
   require 'async'
@@ -33,15 +33,15 @@ class PostsController < ApplicationController
     if directionParam === 'desc'
       sortedData = sortedData.reverse()
     end
-    data = {"posts": sortedData}
+    data = {"drinks": sortedData}
     return data
   end
 
-  def handle_incoming_params(category, jsonArr)
-    for cat in @category  
+  def handle_incoming_params(drink, jsonArr)
+    for drink in @drink  
       Async do |task|
         task.async do 
-          url = "https://api.hatchways.io/assessment/blog/posts?tag=#{cat}"
+          url = "www.thecocktaildb.com/api/json/v1/1/filter.php?i=#{drink}"
           Rails.cache.fetch(response = RestClient.get(url), expires_in: 12.hours)
           jsonArr.push(JSON.parse(response))
         end
@@ -49,31 +49,31 @@ class PostsController < ApplicationController
     end
   end
 
-  def get_unique_posts(category)
+  def get_unique_drinks(drink)
     jsonArr = []
-      handle_incoming_params(@category, jsonArr)
-      posts = jsonArr[0]['posts']
+      handle_incoming_params(@drink, jsonArr)
+      drinks = jsonArr[0]['drinks']
         x = 1
         while x < jsonArr.length
-          posts = posts + jsonArr[x]['posts']
+          drinks = drinks + jsonArr[x]['drinks']
           x+=1
         end
-      uniquePosts = posts.uniq {|p| p['id'] } 
+      uniqueDrinks = drinks.uniq {|d| d['idDrink'] } 
   end
 
-  def get_posts
+  def get_drinks
     if !params[:tags]
       return tag_error() 
     end
 
-    @category = params[:tags].split(",")
-    data = {"posts": get_unique_posts(@category)}
+    @drink = params[:tags].split(",")
+    data = {"drinks": get_unique_drinks(@drink)}
     if !params[:sortBy]
       return render json: data
     end
 
     direction = params[:direction] ? params[:direction] : 'asc'
-    validSortParams = ['reads', 'id', 'likes', 'popularity']
+    validSortParams = ['strDrink', 'idDrink']
     validDirectionParams = ['asc', 'desc']
     if !validSortParams.include? params[:sortBy] or !validDirectionParams.include? direction
       return sort_by_error()

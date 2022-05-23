@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :articles
-  get '/api/ping/', to: "posts#index"
-  get '/api/posts/', to: "posts#get_posts"
+  get '/api/ping/', to: "drinks#index"
+  get '/api/drinks/', to: "drinks#get_drinks"
   resources :posts
 end
